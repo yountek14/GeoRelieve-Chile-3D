@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>GeoRelieve Chile 3D</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="viewer">
+    <canvas id="viewer-canvas"></canvas>
+    <div id="viewer-empty">
+      <div id="welcome">
+        <img src="/favicon.svg" alt="logo">
+        <h2>GeoRelieve Chile 3D</h2>
+        <p>Explora la topografía de Chile en tres dimensiones, generada a partir del <b>DEM Copernicus GLO-30</b> (30 m de resolución).</p>
+        <p>Selecciona cualquier punto del mapa — ciudades, volcanes, lagos, glaciares, salares, islas, parques, ríos o géiseres — y visualiza su relieve con los modos DEM, hillshade o vista satelital.</p>
+        <div class="hint">Haz clic en un punto del mapa para comenzar</div>
+      </div>
+    </div>
+    <div id="viewer-status" class="hidden">
+      <img class="spinner" src="/compass.svg" alt="">
+      <span id="status-text">Descargando DEM…</span>
+    </div>
+    <div id="viewer-help">
+      <b>Controles 3D</b><br>
+      <kbd>Mouse izq</kbd> rotar &nbsp; <kbd>Mouse der</kbd> pan<br>
+      <kbd>Rueda</kbd> zoom &nbsp; <kbd>W A S D</kbd> volar<br>
+      <kbd>Q</kbd>/<kbd>E</kbd> subir/bajar &nbsp; <kbd>R</kbd> reset &nbsp; <kbd>C</kbd> brújula
+    </div>
+    <div id="info-card" class="hidden">
+      <div id="info-head">
+        <span id="info-icon"></span>
+        <div>
+          <div id="info-name"></div>
+          <div id="info-sub"></div>
+        </div>
+      </div>
+      <div id="info-details">
+        <div><span>Elevación</span><b id="info-elev">—</b></div>
+        <div><span>Coordenadas</span><b id="info-coords">—</b></div>
+      </div>
+    </div>
+    <div id="viewer-legend" class="hidden">
+      <div id="legend-gradient"></div>
+      <div id="legend-labels"><span id="legend-min">0 m</span><span id="legend-max">0 m</span></div>
+    </div>
+    <img id="compass" src="/compass.svg" alt="brújula">
+    <div id="scalebar">
+      <div id="scalebar-bar"></div>
+      <span id="scalebar-label">5 km</span>
+    </div>
+  </div>
+
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <img id="logo" src="/favicon.svg" alt="logo">
+      <div>
+        <h1>GeoRelieve Chile 3D</h1>
+        <p>Relieve <b>DEM Copernicus GLO-30</b> (30 m)<br>Haz clic en un punto</p>
+      </div>
+    </div>
+    <div id="mapmode">
+      <label class="mapmode-item"><input type="radio" name="mapmode" value="dem" checked><span class="filter-dot" style="background:#4aa34a"></span>DEM</label>
+      <label class="mapmode-item"><input type="radio" name="mapmode" value="hillshade"><span class="filter-dot" style="background:#999"></span>Hillshade</label>
+      <label class="mapmode-item"><input type="radio" name="mapmode" value="satelital"><span class="filter-dot" style="background:#3a6ea5"></span>Satelital</label>
+    </div>
+    <div id="palettes"></div>
+    <div id="filters"></div>
+    <div id="map"></div>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

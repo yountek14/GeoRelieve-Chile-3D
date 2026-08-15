@@ -1,0 +1,227 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; overflow: hidden; font-family: "Segoe UI", system-ui, sans-serif; }
+
+body { display: flex; background: #111; }
+
+/* -------- Visor 3D (izquierda) -------- */
+#viewer {
+  flex: 1;
+  position: relative;
+  background: #0a1828;
+}
+
+#viewer-canvas { display: block; width: 100%; height: 100%; }
+
+#viewer-empty {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  padding: 20px;
+}
+#welcome {
+  max-width: 480px;
+  background: rgba(10, 16, 26, 0.85);
+  border: 1px solid #2a3448;
+  border-radius: 14px;
+  padding: 28px 32px;
+  text-align: center;
+  color: #c9d4e0;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+}
+#welcome img { width: 54px; height: 54px; border-radius: 12px; margin-bottom: 14px; }
+#welcome h2 { font-size: 22px; color: #fff; margin-bottom: 10px; }
+#welcome p { font-size: 14px; line-height: 1.6; margin-bottom: 10px; color: #9fb0c4; }
+#welcome b { color: #e6edf3; }
+#welcome .hint {
+  margin-top: 16px; padding: 9px 14px;
+  background: rgba(0, 188, 212, 0.12); border: 1px solid rgba(0, 188, 212, 0.35);
+  border-radius: 8px; color: #4dd0e1; font-size: 13px; font-weight: 600;
+}
+
+#viewer-status {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.75); color: #fff; padding: 18px 26px;
+  border-radius: 10px; display: flex; align-items: center; gap: 14px;
+  font-size: 15px; z-index: 10;
+}
+
+.spinner {
+  width: 42px; height: 42px;
+  animation: spin 1.4s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#viewer-help {
+  position: absolute; bottom: 12px; left: 12px;
+  background: rgba(0,0,0,0.65); color: #cdd; font-size: 11px;
+  padding: 8px 10px; border-radius: 6px; line-height: 1.7; z-index: 5;
+}
+kbd { background: #2a2a3a; padding: 1px 5px; border-radius: 3px; border: 1px solid #555; font-family: monospace; }
+
+#viewer-title {
+  position: absolute; top: 12px; left: 14px;
+  color: #fff; font-size: 16px; font-weight: 600; z-index: 5;
+  background: rgba(0,0,0,0.55); padding: 6px 12px; border-radius: 6px;
+}
+
+/* -------- Tarjeta de info -------- */
+#info-card {
+  position: absolute; top: 12px; left: 14px; z-index: 5;
+  background: rgba(10, 16, 26, 0.82); border: 1px solid #2a3448;
+  border-radius: 10px; padding: 12px 14px; color: #e6edf3;
+  backdrop-filter: blur(4px);
+}
+#info-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+#info-icon { width: 32px; height: 32px; flex-shrink: 0; }
+#info-icon svg { width: 100%; height: 100%; display: block; }
+#info-name { font-size: 16px; font-weight: 700; line-height: 1.2; }
+#info-sub { font-size: 12px; color: #8b98a8; }
+#info-details { display: flex; gap: 18px; border-top: 1px solid #2a3448; padding-top: 9px; }
+#info-details div { display: flex; flex-direction: column; gap: 2px; }
+#info-details span { font-size: 10px; color: #8b98a8; text-transform: uppercase; letter-spacing: 0.4px; }
+#info-details b { font-size: 13px; font-weight: 600; }
+
+#viewer-legend {
+  position: absolute; right: 14px; bottom: 12px;
+  background: rgba(0,0,0,0.7); padding: 10px 12px; border-radius: 8px; z-index: 5;
+}
+#legend-gradient {
+  width: 16px; height: 120px; border-radius: 4px;
+  background: linear-gradient(to top, #062c63, #1e5fa8, #3e94d0, #7fc8d0,
+              #c2e0a0, #fee08b, #fdae61, #f46d43, #d73027, #7f0000);
+}
+#legend-labels { display: flex; flex-direction: column; justify-content: space-between; height: 120px; }
+#legend-labels span { color: #ddd; font-size: 10px; margin-left: 6px; }
+
+.hidden { display: none !important; }
+
+/* -------- Brújula -------- */
+#compass {
+  position: absolute;
+  right: 78px;
+  bottom: 14px;
+  width: 110px;
+  height: 110px;
+  pointer-events: none;
+  z-index: 5;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+}
+
+/* -------- Escala de distancia -------- */
+#scalebar {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  pointer-events: none; z-index: 5;
+}
+#scalebar-bar {
+  height: 5px;
+  border-left: 1.5px solid #fff;
+  border-right: 1.5px solid #fff;
+  border-bottom: 1.5px solid #fff;
+  min-width: 40px;
+}
+#scalebar-label { font-size: 10px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+
+/* -------- Sidebar (mapa Chile) -------- */
+#sidebar {
+  width: 340px;
+  display: flex; flex-direction: column;
+  background: #161b22; border-left: 1px solid #2a3040;
+}
+
+#sidebar-header { padding: 14px 16px 10px; color: #e6edf3; display: flex; align-items: center; gap: 10px; }
+#sidebar-header h1 { font-size: 18px; margin-bottom: 4px; }
+#sidebar-header p { font-size: 12px; color: #8b98a8; line-height: 1.5; }
+#logo { width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+
+#map { flex: 1; background: #0d1117; }
+
+/* -------- Selector tipo de mapa -------- */
+#mapmode {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid #2a3040;
+}
+.mapmode-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #c9d4e0;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  user-select: none;
+}
+.mapmode-item:hover { background: #232b3a; }
+.mapmode-item input { accent-color: #0cf; cursor: pointer; }
+
+/* -------- Selector de paletas -------- */
+#palettes {
+  display: flex;
+  gap: 8px;
+  padding: 4px 12px 8px;
+  border-top: 1px solid #2a3040;
+}
+.palette-btn {
+  width: 36px; height: 16px; border-radius: 4px;
+  border: 1px solid #2a3040; cursor: pointer; padding: 0;
+}
+.palette-btn.active { outline: 2px solid #0cf; outline-offset: 1px; }
+
+/* -------- Filtros por categoria -------- */
+#filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 10px;
+  padding: 10px 12px;
+  border-top: 1px solid #2a3040;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#filters h3 {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: #8b98a8;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #c9d4e0;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  user-select: none;
+}
+.filter-item:hover { background: #232b3a; }
+.filter-item input { accent-color: #0cf; cursor: pointer; }
+.filter-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.filter-dot svg { width: 100%; height: 100%; display: block; }
+.filter-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Leaflet sobre fondo oscuro */
+.leaflet-container { background: #0d1117; }
+
+/* Marcadores con icono */
+.cat-marker {
+  background: transparent;
+  border: none;
+}
+.cat-marker svg {
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+}

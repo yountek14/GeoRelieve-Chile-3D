@@ -1,0 +1,9 @@
+# Caché de DEM descargado (se regenera automáticamente)
+data/tiles/
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs del servidor
+*.log

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2c3546"/>
+      <stop offset="82%" stop-color="#151b27"/>
+      <stop offset="100%" stop-color="#10151f"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="100" cy="100" r="97" fill="url(#bg)"/>
+  <circle cx="100" cy="100" r="97" fill="none" stroke="#4a5870" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="70" fill="none" stroke="#33404f" stroke-width="0.8"/>
+
+  <polygon points="100,12 112,88 100,100 88,88" fill="#e05252"/>
+  <g fill="#b8c7db">
+    <polygon points="100,12 112,88 100,100 88,88" transform="rotate(90 100 100)"/>
+    <polygon points="100,12 112,88 100,100 88,88" transform="rotate(180 100 100)"/>
+    <polygon points="100,12 112,88 100,100 88,88" transform="rotate(270 100 100)"/>
+  </g>
+  <g fill="#5b6b82">
+    <polygon points="100,24 106,90 100,98 94,90" transform="rotate(45 100 100)"/>
+    <polygon points="100,24 106,90 100,98 94,90" transform="rotate(135 100 100)"/>
+    <polygon points="100,24 106,90 100,98 94,90" transform="rotate(225 100 100)"/>
+    <polygon points="100,24 106,90 100,98 94,90" transform="rotate(315 100 100)"/>
+  </g>
+
+  <text x="100" y="46" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="bold" fill="#ffffff" text-anchor="middle" stroke="#1a2230" stroke-width="1">N</text>
+  <text x="100" y="173" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#dfe7f2" text-anchor="middle">S</text>
+  <text x="157" y="107" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#dfe7f2" text-anchor="middle">E</text>
+  <text x="43" y="107" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#dfe7f2" text-anchor="middle">O</text>
+</svg>

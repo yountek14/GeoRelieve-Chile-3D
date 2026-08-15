@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="GeoRelieve Chile 3D" width="140">
+  <img src="assets/logo-relieve.png" alt="GeoRelieve Chile 3D" width="140">
 </p>
 
 <h1 align="center">GeoRelieve Chile 3D</h1>
